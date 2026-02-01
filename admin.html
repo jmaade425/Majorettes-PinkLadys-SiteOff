@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coach - Majorettes & Pink Lady's</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Sécurité pour cacher le contenu avant vérification du code */
+        #admin-content { display: none; }
+
+        .admin-nav { background: var(--dark-blue); padding: 15px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-link { color: var(--pink-soft); text-decoration: none; font-weight: bold; border: 1px solid var(--pink-soft); padding: 5px 10px; border-radius: 5px; }
+
+        .admin-container { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px; padding: 20px; max-width: 1200px; margin: auto; }
+        .admin-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        .calendar-day { height: 60px; cursor: pointer; transition: 0.2s; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 5px; }
+        .selected-day { border: 3px solid var(--pink-soft) !important; background: #fff5f8 !important; }
+        
+        .auto-btn { color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; margin-top: 10px; width: 100%; font-weight: bold; }
+        .auto-btn.pink { background: #E91E63; }
+        .auto-btn.maj { background: #673AB7; }
+        
+        .recap-list { margin-top: 20px; max-height: 250px; overflow-y: auto; }
+        .recap-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f9f9f9; border-left: 5px solid var(--purple-main); margin-bottom: 8px; border-radius: 4px; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .btn-save { background: #27ae60; color: white; border: none; cursor: pointer; font-weight: bold; border-radius: 8px; }
+        .btn-delete { background: #e74c3c; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 8px; }
+
+        @media (max-width: 850px) { .admin-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <script>
+        if (localStorage.getItem('role') !== 'coach') {
+            alert("Accès réservé aux coachs !");
+            window.location.href = "index.html";
+        }
+    </script>
+
+    <div id="admin-content" style="display: block;">
+        <nav class="admin-nav">
+            <h1>🎀 GESTION PLANNING</h1>
+            <a href="index.html" class="back-link">⬅ Voir le site</a>
+        </nav>
+
+        <div class="admin-container">
+            <div>
+                <div class="admin-card">
+                    <div class="calendar-header">
+                        <button id="prevBtn">◀</button>
+                        <strong id="currentMonthYear">Chargement...</strong>
+                        <button id="nextBtn">▶</button>
+                    </div>
+                    <div id="calendarGrid" class="calendar-grid"></div>
+                    <hr style="margin: 20px 0; border:0; border-top:1px solid #eee;">
+                    <h3>⚡ Programmation Auto</h3>
+                    <button class="auto-btn pink" onclick="autoProgram('mercredi')">📅 Mercredis : PINK LADY'S</button>
+                    <button class="auto-btn maj" onclick="autoProgram('vendredi')">📅 Vendredis : MAJORETTES</button>
+                </div>
+
+                <div class="admin-card" style="margin-top: 20px;">
+                    <h3>🎭 Liste des Spectacles</h3>
+                    <div id="recapList" class="recap-list"></div>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h2 id="formTitle">Modifier une date</h2>
+                <p id="displayDate" style="color: var(--pink-bold); font-weight: bold; margin-bottom: 15px;">Cliquez sur un jour dans le calendrier</p>
+                <input type="hidden" id="eventDate">
+                
+                <div class="form-group">
+                    <label>Titre de l'événement :</label>
+                    <input type="text" id="eventTitle" placeholder="Ex: Gala de Noël">
+                </div>
+
+                <div class="form-group">
+                    <label>Type :</label>
+                    <select id="eventType">
+                        <option value="train">💖 Entraînement</option>
+                        <option value="show">💜 Spectacle</option>
+                        <option value="other">🤍 Autre</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>🕒 Heure début :</label>
+                        <input type="text" id="eventHourStart" placeholder="ex: 18h00">
+                    </div>
+                    <div class="form-group">
+                        <label>🕒 Convocation :</label>
+                        <input type="text" id="eventHourConv" placeholder="ex: 16h30">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>📍 Lieu :</label>
+                    <input type="text" id="eventPlace" placeholder="ex: Firminy">
+                </div>
+
+                <div class="form-group">
+                    <label>📝 Infos supplémentaires :</label>
+                    <textarea id="eventMore" rows="3" placeholder="Tenue, matériel..."></textarea>
+                </div>
+                
+                <button class="btn-save" onclick="saveEvent()" style="width: 100%; padding: 15px;">Enregistrer les modifs ✨</button>
+                <button id="delBtn" class="btn-delete" style="display:none; margin-top:15px; width:100%;" onclick="deleteCurrentEvent()">Supprimer la date 🗑️</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAeGgQL3Lg0PE54veFBX9jguANTr7hX8xQ",
+            authDomain: "majorette-pinkladies-site.firebaseapp.com",
+            databaseURL: "https://majorette-pinkladies-site-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "majorette-pinkladies-site",
+            storageBucket: "majorette-pinkladies-site.firebasestorage.app",
+            messagingSenderId: "870826859078",
+            appId: "1:870826859078:web:f76b3b4e80bce1e8798847"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        let currentDate = new Date();
+        let fbEvents = {};
+
+        onValue(ref(db, 'evenements/'), (snapshot) => {
+            fbEvents = snapshot.val() || {};
+            renderCalendar();
+            renderRecap();
+        });
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthText = document.getElementById('currentMonthYear');
+            grid.innerHTML = '';
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const names = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+            monthText.innerText = names[month] + " " + year;
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            let startDay = (firstDay === 0) ? 6 : firstDay - 1;
+            for (let x = 0; x < startDay; x++) grid.innerHTML += '<div class="calendar-day empty"></div>';
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateKey = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                const ev = fbEvents[dateKey];
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day' + (ev ? ` day-${ev.type}` : '');
+                dayDiv.innerText = day;
+                dayDiv.id = "day-" + dateKey;
+                dayDiv.onclick = () => selectDay(dateKey, ev);
+                grid.appendChild(dayDiv);
+            }
+        }
+
+        function renderRecap() {
+            const recapDiv = document.getElementById('recapList');
+            recapDiv.innerHTML = '';
+            const sortedDates = Object.keys(fbEvents).sort();
+            const importantEvents = sortedDates.filter(d => fbEvents[d].type !== 'train');
+            if(importantEvents.length === 0) { recapDiv.innerHTML = '<p style="text-align:center; color:#999;">Aucun spectacle.</p>'; return; }
+            importantEvents.forEach(date => {
+                const ev = fbEvents[date];
+                recapDiv.innerHTML += `<div class="recap-item" onclick="selectDay('${date}', fbEvents['${date}'])" style="cursor:pointer"><div><strong>${date}</strong><br><span>${ev.title}</span></div><span>🎭</span></div>`;
+            });
+        }
+
+        window.selectDay = function(date, ev) {
+            document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected-day'));
+            const el = document.getElementById("day-" + date);
+            if(el) el.classList.add('selected-day');
+            document.getElementById('eventDate').value = date;
+            document.getElementById('displayDate').innerText = "Jour sélectionné : " + date;
+            
+            if(ev) {
+                document.getElementById('formTitle').innerText = "Modifier l'événement";
+                document.getElementById('eventTitle').value = ev.title;
+                document.getElementById('eventType').value = ev.type;
+                
+                // Décodage de la description
+                const lines = ev.desc.split('<br>');
+                document.getElementById('eventHourStart').value = lines[0] ? lines[0].replace('Début : ', '') : "";
+                document.getElementById('eventHourConv').value = lines[1] ? lines[1].replace('Convocation : ', '') : "";
+                document.getElementById('eventPlace').value = lines[2] ? lines[2].replace('Lieu : ', '') : "";
+                document.getElementById('eventMore').value = lines[3] ? lines[3].replace('Infos : ', '') : "";
+                
+                document.getElementById('delBtn').style.display = "block";
+            } else {
+                document.getElementById('formTitle').innerText = "Ajouter un événement";
+                document.getElementById('eventTitle').value = "";
+                document.getElementById('eventHourStart').value = "";
+                document.getElementById('eventHourConv').value = "";
+                document.getElementById('eventPlace').value = "";
+                document.getElementById('eventMore').value = "";
+                document.getElementById('delBtn').style.display = "none";
+            }
+        };
+
+        window.saveEvent = function() {
+            const date = document.getElementById('eventDate').value;
+            const title = document.getElementById('eventTitle').value;
+            if(!date || !title) return alert("Cliquez sur un jour !");
+            
+            const hStart = document.getElementById('eventHourStart').value;
+            const hConv = document.getElementById('eventHourConv').value;
+            const place = document.getElementById('eventPlace').value;
+            const more = document.getElementById('eventMore').value;
+
+            const fullDesc = `Début : ${hStart}<br>Convocation : ${hConv}<br>Lieu : ${place}<br>Infos : ${more}`;
+
+            set(ref(db, 'evenements/' + date), {
+                type: document.getElementById('eventType').value,
+                title: title,
+                desc: fullDesc
+            }).then(() => alert("C'est enregistré ! ✅"));
+        };
+
+        window.deleteCurrentEvent = function() {
+            const date = document.getElementById('eventDate').value;
+            if(confirm("Supprimer cet événement ?")) remove(ref(db, 'evenements/' + date));
+        };
+
+        window.autoProgram = function(jourNom) {
+            const targetDay = (jourNom === 'mercredi') ? 3 : 5;
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            let titre = (jourNom === 'mercredi') ? "Entraînement PINK LADIES" : "Entraînement MAJORETTES";
+            let lieu = (jourNom === 'mercredi') ? "Gymnase Fayol Gaffard" : "Gymnase De La Tardive";
+            
+            for (let i = 1; i <= 31; i++) {
+                let d = new Date(year, month, i);
+                if (d.getMonth() !== month) break;
+                if (d.getDay() === targetDay) {
+                    const dateKey = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+                    set(ref(db, 'evenements/' + dateKey), {
+                        type: 'train', 
+                        title: titre, 
+                        desc: `Début : 18h00<br>Convocation : /<br>Lieu : ${lieu}<br>Infos : Entraînement habituel`
+                    });
+                }
+            }
+            alert("Mois programmé ! 📅");
+        };
+
+        document.getElementById('prevBtn').onclick = () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); };
+        document.getElementById('nextBtn').onclick = () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); };
+    </script>
+</body>
+</html>

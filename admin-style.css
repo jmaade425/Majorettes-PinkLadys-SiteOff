@@ -1,0 +1,86 @@
+/* --- CONFIGURATION ADMIN --- */
+:root {
+    --bg-admin: #0C0420;
+    --card-white: #ffffff;
+    --pink-admin: #BA6E8F;
+    --purple-admin: #7B466A;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--bg-admin);
+    margin: 0;
+}
+
+/* On s'assure que le container est bien espacé */
+.admin-container {
+    padding: 20px 5%;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 25px;
+}
+
+@media (max-width: 850px) {
+    .admin-container { grid-template-columns: 1fr; }
+}
+
+/* Style des cartes blanches */
+.admin-card {
+    background: var(--card-white);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* --- ÉLÉMENTS DE FORMULAIRE --- */
+.form-group { margin-bottom: 15px; }
+label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--purple-admin); }
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+/* --- BOUTONS --- */
+.btn-save {
+    background: #27ae60; /* Vert pour valider */
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-save:hover { background: #219150; transform: translateY(-2px); }
+
+.btn-delete {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* --- RECAPITULATIF DES EVENEMENTS --- */
+.recap-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #f8f9fa;
+    border-left: 5px solid var(--purple-admin);
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.recap-item:hover {
+    background: #fff0f5;
+    transform: scale(1.02);
+}

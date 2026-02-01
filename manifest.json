@@ -1,0 +1,15 @@
+{
+  "name": "Majorettes & Pink Lady's",
+  "short_name": "PinkLadies",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffecf2",
+  "theme_color": "#7B466A",
+  "icons": [
+    {
+      "src": "images/IMG-20241012-WA0001.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    }
+  ]
+}
