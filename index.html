@@ -26,6 +26,7 @@
             <li><a href="#galerie">Photos</a></li>
             <li><a href="#playlist">Musiques</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li><a href="#coach" id="admin-link">Coach 🔐</a></li>
         </ul>
     </nav>
 
@@ -153,12 +154,13 @@
         <p id="lightbox-caption"></p>
     </div>
 
-    <script>
-        // Vérification de l'accès au chargement
+<script>
+        // 1. Vérification de l'accès au chargement
         if (localStorage.getItem('majorettes_auth') === 'true') {
             document.getElementById('lock-screen').style.display = 'none';
         }
 
+        // 2. Fonction pour valider le code
         function verifierCode() {
             const codeSaisi = document.getElementById('input-code').value;
             const codeParent = "MP42#";  
@@ -178,6 +180,22 @@
                 alert("Code incorrect 🎀");
             }
         }
+
+        // 3. NOUVEAU : Fonction pour le bouton "Coach" du menu
+        document.getElementById('admin-link').addEventListener('click', function(e) {
+            e.preventDefault(); // Empêche de sauter en haut de page
+            
+            // On supprime l'autorisation pour forcer le code
+            localStorage.removeItem('majorettes_auth');
+            localStorage.removeItem('role');
+            
+            // On vide le champ et on réaffiche l'écran
+            document.getElementById('input-code').value = '';
+            document.getElementById('lock-screen').style.display = 'flex';
+            
+            // On remonte en haut pour que l'écran soit bien visible
+            window.scrollTo(0, 0);
+        });
     </script>
     <script type="module" src="script.js"></script>
 

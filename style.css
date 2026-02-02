@@ -330,28 +330,30 @@ nav ul {
 /* --- ADAPTATION MOBILE --- */
 @media (max-width: 600px) {
     nav ul {
+        display: flex;
+        flex-wrap: wrap;       /* <-- AJOUTE ÇA : Permet de passer à la ligne */
         flex-direction: row; 
-        justify-content: center; /* Regroupe les boutons au centre */
+        justify-content: center; 
         align-items: center;
-        gap: 5px;               /* C'est ICI que tu gères l'espace entre eux */
-        padding: 10px 0;
+        gap: 8px;              /* Un peu d'espace pour que ce soit beau */
+        padding: 10px;
         width: 100%;
     }
 
     nav li {
-        width: auto;            /* CHANGE ÇA : 'auto' au lieu de '100%' */
-        text-align: center;
+        width: auto;
     }
 
     nav a {
-        display: inline-block;  /* CHANGE ÇA : 'inline-block' au lieu de 'block' */
-        padding: 6px 10px;      /* Un peu moins haut pour gagner de la place */
+        display: inline-block;
+        padding: 8px 12px;
         background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2); /* Un petit bord pour mieux voir */
         border-radius: 8px;
-        margin: 0; 
-        font-size: 0.8rem;      /* On réduit la taille pour que tout tienne en ligne */
+        font-size: 0.85rem; 
+        white-space: nowrap;   /* Empêche le texte du bouton de se couper en deux */
     }
-} 
+}
 
 /* --- ÉCRAN DE VERROUILLAGE (LOCK SCREEN) --- */
 #lock-screen {
