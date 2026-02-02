@@ -327,31 +327,38 @@ nav ul {
     padding: 10px;
 }
 
-/* --- ADAPTATION MOBILE (Pour que tout soit visible) --- */
+/* --- ADAPTATION MOBILE (Correction bordures) --- */
 @media (max-width: 600px) {
+    nav {
+        width: 100%;
+        overflow: hidden; /* Empêche le site de glisser de gauche à droite */
+    }
+
     nav ul {
-        display: flex;       /* Active le mode rangement flexible */
-        flex-wrap: wrap;    /* <--- TRÈS IMPORTANT : autorise le passage à la ligne */
-        justify-content: center; /* Centre les boutons */
-        gap: 8px;           /* Espace entre les boutons */
-        padding: 15px 5px;  /* Espace interne du menu */
+        display: flex;
+        flex-wrap: wrap;      /* Force le passage à la ligne si ça touche les bords */
+        justify-content: center;
+        gap: 6px;             /* Espace réduit pour gagner de la place */
+        padding: 10px;        /* Marge intérieure pour que les boutons ne collent pas aux bords */
+        margin: 0 auto;
+        max-width: 100%;      /* Interdiction de dépasser l'écran */
+        box-sizing: border-box; 
         list-style: none;
     }
 
     nav li {
-        width: auto;        /* Chaque bouton prend juste la place dont il a besoin */
+        display: block;       /* Assure que chaque puce se comporte bien */
     }
 
     nav a {
         display: inline-block;
-        padding: 8px 12px;
-        background: rgba(255, 255, 255, 0.15); /* Fond léger pour voir les boutons */
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 10px;
-        font-size: 0.85rem;  /* Taille de texte lisible mais compacte */
-        text-decoration: none;
+        padding: 6px 10px;    /* Boutons légèrement plus petits */
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 6px;
+        font-size: 0.75rem;   /* Texte plus petit (0.75 au lieu de 0.85) */
         color: white;
-        white-space: nowrap; /* Empêche le texte de se couper en deux */
+        text-decoration: none;
+        white-space: nowrap;
     }
 }
 
