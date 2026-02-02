@@ -459,3 +459,7 @@ nav ul {
     transform: scale(1.05);
     box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
 }
+
+.announcement-bar { background: #ff1493; color: white; padding: 10px 0; overflow: hidden; z-index: 1001; }
+.scrolling-text { display: inline-block; white-space: nowrap; padding-left: 100%; animation: scroll-left 15s linear infinite; font-weight: bold; }
+@keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }

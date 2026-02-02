@@ -259,6 +259,26 @@
 
         document.getElementById('prevBtn').onclick = () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); };
         document.getElementById('nextBtn').onclick = () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); };
+
+        function envoyerAlerte() {
+    const texte = document.getElementById('input-alerte').value;
+    set(ref(db, 'site/alerte'), texte); // On envoie direct le texte à Firebase
+    alert("Bandeau mis à jour !");
+    }
+
+    function effacerAlerte() {
+        set(ref(db, 'site/alerte'), ""); // On met du vide pour cacher le bandeau
+        alert("Bandeau supprimé !");
+    }
     </script>
+
+<div class="admin-box">
+    <h3>📢 Message Urgent (Bandeau défilant)</h3>
+    <input type="text" id="input-alerte" placeholder="Ex: Entraînement annulé...">
+    <button onclick="envoyerAlerte()">Publier le bandeau</button>
+    <button onclick="effacerAlerte()" style="background:gray;">Supprimer le bandeau</button>
+</div>
+
+
 </body>
 </html>

@@ -19,6 +19,10 @@
         </div>
     </div>
 
+<div id="top-announcement" class="announcement-bar" style="display: none;">
+    <div class="scrolling-text" id="announcement-text"></div>
+</div>
+
     <nav>
         <ul>
             <li><a href="#actus">Actus</a></li>
@@ -196,6 +200,17 @@
             // On remonte en haut pour que l'écran soit bien visible
             window.scrollTo(0, 0);
         });
+
+        window.addEventListener('load', () => {
+    const savedInfo = localStorage.getItem('coach_announcement');
+    const bar = document.getElementById('top-announcement');
+    const textZone = document.getElementById('announcement-text');
+
+    if (savedInfo && savedInfo.trim() !== "") {
+        textZone.innerText = savedInfo;
+        bar.style.display = 'block';
+    }
+});
     </script>
     <script type="module" src="script.js"></script>
 

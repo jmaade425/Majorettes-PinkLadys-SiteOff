@@ -187,3 +187,16 @@ window.closeLightbox = function() {
 
 
 
+// On écoute la "boîte" qui s'appelle 'alerte' dans ta base Firebase
+onValue(ref(db, 'site/alerte'), (snapshot) => {
+    const message = snapshot.val();
+    const bandeau = document.getElementById('top-announcement');
+    const zoneTexte = document.getElementById('announcement-text');
+
+    if (message && message.trim() !== "") {
+        zoneTexte.innerText = message;
+        bandeau.style.display = 'block';
+    } else {
+        bandeau.style.display = 'none';
+    }
+});
