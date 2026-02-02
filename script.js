@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+// --- CONFIGURATION FIREBASE ---
 const firebaseConfig = {
     apiKey: "AIzaSyAeGgQL3Lg0PE54veFBX9jguANTr7hX8xQ",
     authDomain: "majorette-pinkladies-site.firebaseapp.com",
@@ -17,37 +18,45 @@ const db = getDatabase(app);
 let currentDate = new Date();
 let fbEvents = {};
 
-// --- 1. ÉCOUTER FIREBASE ---
+// --- 1. ÉCOUTER FIREBASE (SYNCHRO EN DIRECT) ---
 onValue(ref(db, 'evenements/'), (snapshot) => {
     fbEvents = snapshot.val() || {};
-    console.log("Données reçues :", fbEvents);
-    
     renderCalendar();
     renderEventList();
-    checkNotifications(); // Nouvelle fonction pour le point rouge
+    checkNotifications();
 });
 
-// --- 2. GESTION DU POINT ROUGE (NOTIFICATIONS) ---
+// Écoute aussi le bandeau d'alerte
+onValue(ref(db, 'site/alerte'), (snapshot) => {
+    const message = snapshot.val();
+    const bandeau = document.getElementById('top-announcement');
+    const zoneTexte = document.getElementById('announcement-text');
+    if (message && message.trim() !== "") {
+        zoneTexte.innerText = message;
+        bandeau.style.display = 'block';
+    } else {
+        bandeau.style.display = 'none';
+    }
+});
+
+// --- 2. GESTION DES NOTIFICATIONS ---
 function checkNotifications() {
     const planningBtn = document.querySelector('a[href="#calendrier"]');
     if (!planningBtn) return;
-
     const countStored = localStorage.getItem('eventCount') || 0;
     const countCurrent = Object.keys(fbEvents).length;
 
-    // Si nouveau contenu, on ajoute un petit point rouge
     if (countCurrent > countStored) {
         planningBtn.style.position = 'relative';
         if (!document.getElementById('notif-dot')) {
             const dot = document.createElement('span');
             dot.id = 'notif-dot';
-            dot.style.cssText = "position:absolute; top:-5px; right:-5px; width:10px; height:10px; background:red; border-radius:50%; border:2px solid var(--dark-blue);";
+            dot.style.cssText = "position:absolute; top:-5px; right:-5px; width:10px; height:10px; background:red; border-radius:50%; border:2px solid white;";
             planningBtn.appendChild(dot);
         }
     }
 }
 
-// Nettoyer la notif quand on clique sur le planning
 document.addEventListener('click', (e) => {
     if (e.target.closest('a[href="#calendrier"]')) {
         localStorage.setItem('eventCount', Object.keys(fbEvents).length);
@@ -60,7 +69,6 @@ document.addEventListener('click', (e) => {
 window.renderCalendar = function() {
     const grid = document.getElementById('calendarGrid');
     const monthYearText = document.getElementById('currentMonthYear');
-    
     if (!grid || !monthYearText) return;
 
     grid.innerHTML = '';
@@ -72,7 +80,6 @@ window.renderCalendar = function() {
 
     const firstDayIndex = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    
     let startDay = (firstDayIndex === 0) ? 6 : firstDayIndex - 1;
 
     for (let x = 0; x < startDay; x++) {
@@ -85,7 +92,6 @@ window.renderCalendar = function() {
         const dayDiv = document.createElement('div');
         dayDiv.className = 'calendar-day';
         dayDiv.innerText = day;
-
         const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
         if (fbEvents[dateKey]) {
@@ -97,7 +103,6 @@ window.renderCalendar = function() {
     }
 };
 
-// --- 4. NAVIGATION ET INFOS ---
 window.changeMonth = function(direction) {
     currentDate.setMonth(currentDate.getMonth() + direction);
     window.renderCalendar();
@@ -108,95 +113,76 @@ window.showInfo = function(titre, details) {
     if (!panel) return;
     panel.style.opacity = 0;
     setTimeout(() => {
-        panel.innerHTML = `
-            <h4>${titre}</h4>
-            <div style="width:40px;height:3px;background:var(--pink-soft);margin-bottom:15px;"></div>
-            <p>${details}</p>
-        `;
+        panel.innerHTML = `<h4>${titre}</h4><p>${details}</p>`;
         panel.style.opacity = 1;
     }, 150);
 };
 
-// --- 5. LISTE J-X ---
+// --- 4. LISTE DES PROCHAINS ÉVÉNEMENTS (J-X) ---
 function renderEventList() {
     const listDiv = document.getElementById('main-event-list');
     if (!listDiv) return;
     listDiv.innerHTML = '';
 
     const today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
 
-    // --- LE FILTRE EST ICI ---
+    // Transformation de l'objet Firebase en tableau filtré
     const activeEvents = Object.keys(fbEvents)
-        .filter(dateKey => {
-            const eventDate = new Date(dateKey);
-            const isFuture = eventDate >= today;
-            const isNotTraining = fbEvents[dateKey].type !== 'train'; // On exclut les entraînements
-            return isFuture && isNotTraining;
+        .map(dateKey => ({ dateStr: dateKey, ...fbEvents[dateKey] }))
+        .filter(ev => {
+            const eventDate = new Date(ev.dateStr);
+            eventDate.setHours(0, 0, 0, 0);
+            return eventDate >= today && ev.type !== 'train';
         })
-        .sort(); // Trie par date
-    // -------------------------
+        .sort((a, b) => new Date(a.dateStr) - new Date(b.dateStr));
 
     if (activeEvents.length === 0) {
-        listDiv.innerHTML = '<p style="font-size:0.9rem; opacity:0.8;">Aucun spectacle ou gala prévu pour le moment. ✨</p>';
+        listDiv.innerHTML = '<p style="text-align:center; opacity:0.7;">Aucun spectacle prévu. ✨</p>';
         return;
     }
 
-    activeEvents.slice(0, 3).forEach(dateStr => {
-        const diff = Math.ceil((new Date(dateStr) - today) / (1000 * 60 * 60 * 24));
+    activeEvents.slice(0, 3).forEach(ev => {
+        const eventDate = new Date(ev.dateStr);
+        eventDate.setHours(0, 0, 0, 0);
+        
+        // Calcul millisecondes -> Jours
+        const diffDays = Math.round((eventDate - today) / (1000 * 60 * 60 * 24));
+
         const item = document.createElement('div');
         item.className = 'event-item';
+        item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#fff; padding:12px; border-radius:12px; margin-bottom:10px; border:1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05)";
         
-        // On change l'icône selon le type
-        const icon = fbEvents[dateStr].type === 'show' ? '🎭' : '📅';
+        let labelJours = diffDays === 0 ? "JOUR J ! ✨" : `J - ${diffDays}`;
+        let badgeColor = diffDays === 0 ? "#ff1493" : "#BA6E8F";
+
+        const icon = ev.type === 'show' ? '🎭' : '📅';
         
         item.innerHTML = `
             <div style="display:flex; align-items:center; gap:10px;">
                 <span style="font-size:1.2rem">${icon}</span>
                 <div>
-                    <strong style="color:var(--dark-blue);">${fbEvents[dateStr].title}</strong><br>
-                    <small style="color:var(--purple-main); font-weight:bold;">${dateStr}</small>
+                    <strong style="color:#0C0420;">${ev.title}</strong><br>
+                    <small style="color:#7B466A; font-weight:bold;">${ev.dateStr}</small>
                 </div>
             </div>
-            <div class="days-left" style="background:var(--pink-bold); color:white; padding:4px 10px; border-radius:15px; font-size:0.75rem; font-weight:bold;">
-                J - ${diff}
+            <div style="background:${badgeColor}; color:white; padding:4px 10px; border-radius:15px; font-size:0.75rem; font-weight:bold; white-space:nowrap;">
+                ${labelJours}
             </div>
         `;
-        
-        // Un petit style pour rendre ça joli
-        item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#fff; padding:12px; border-radius:12px; margin-bottom:10px; border:1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05)";
-        
         listDiv.appendChild(item);
     });
 }
 
-// --- 6. LIGHTBOX PHOTOS ---
+// --- 5. LIGHTBOX PHOTOS ---
 window.openLightbox = function(imgElement) {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
-    const lightboxCaption = document.getElementById('lightbox-caption');
-
+    if (!lightbox || !lightboxImg) return;
     lightbox.style.display = 'flex';
     lightboxImg.src = imgElement.src;
-    lightboxCaption.innerText = imgElement.alt;
 };
 
 window.closeLightbox = function() {
     document.getElementById('lightbox').style.display = 'none';
 };
-
-
-
-// On écoute la "boîte" qui s'appelle 'alerte' dans ta base Firebase
-onValue(ref(db, 'site/alerte'), (snapshot) => {
-    const message = snapshot.val();
-    const bandeau = document.getElementById('top-announcement');
-    const zoneTexte = document.getElementById('announcement-text');
-
-    if (message && message.trim() !== "") {
-        zoneTexte.innerText = message;
-        bandeau.style.display = 'block';
-    } else {
-        bandeau.style.display = 'none';
-    }
-});
