@@ -4,15 +4,17 @@
     --card-white: #ffffff;
     --pink-admin: #BA6E8F;
     --purple-admin: #7B466A;
+    --alert-bg: #fff5f9; /* Pour la zone de texte en direct */
 }
 
 body {
     font-family: 'Segoe UI', sans-serif;
     background-color: var(--bg-admin);
     margin: 0;
+    color: #333;
 }
 
-/* On s'assure que le container est bien espacé */
+/* Container en Grille */
 .admin-container {
     padding: 20px 5%;
     display: grid;
@@ -24,12 +26,13 @@ body {
     .admin-container { grid-template-columns: 1fr; }
 }
 
-/* Style des cartes blanches */
-.admin-card {
+/* Style des cartes (admin-card ou admin-box) */
+.admin-card, .admin-box {
     background: var(--card-white);
     padding: 25px;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    margin-bottom: 20px;
 }
 
 /* --- ÉLÉMENTS DE FORMULAIRE --- */
@@ -42,10 +45,13 @@ input, select, textarea {
     border: 1px solid #ddd;
     border-radius: 10px;
     font-size: 1rem;
+    box-sizing: border-box;
+    margin-bottom: 10px;
 }
 
 /* --- BOUTONS --- */
-.btn-save {
+.btn-save, .admin-btn.btn-save {
+    width: 100%;
     background: #27ae60; /* Vert pour valider */
     color: white;
     border: none;
@@ -54,20 +60,53 @@ input, select, textarea {
     font-weight: bold;
     cursor: pointer;
     transition: 0.3s;
+    margin-bottom: 10px;
 }
 
 .btn-save:hover { background: #219150; transform: translateY(-2px); }
 
-.btn-delete {
+.btn-delete, .admin-btn.btn-delete {
+    width: 100%;
     background: #e74c3c;
     color: white;
     border: none;
-    padding: 10px;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
     cursor: pointer;
+    transition: 0.3s;
 }
 
-/* --- RECAPITULATIF DES EVENEMENTS --- */
+.btn-delete:hover { background: #c0392b; }
+
+/* --- NOUVEAU : ZONE D'AFFICHAGE DU MESSAGE EN DIRECT --- */
+#status-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--alert-bg);
+    border-radius: 10px;
+    border: 2px dashed var(--pink-admin);
+    text-align: center;
+}
+
+#status-container small {
+    display: block;
+    color: var(--purple-admin);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#current-msg-display {
+    margin: 0;
+    font-weight: bold;
+    color: #333;
+    font-size: 1rem;
+    font-style: italic;
+}
+
+/* --- RÉCAPITULATIF DES ÉVÉNEMENTS (Existant) --- */
 .recap-item {
     display: flex;
     justify-content: space-between;
