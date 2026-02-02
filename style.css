@@ -327,31 +327,31 @@ nav ul {
     padding: 10px;
 }
 
-/* --- ADAPTATION MOBILE --- */
+/* --- ADAPTATION MOBILE (Pour que tout soit visible) --- */
 @media (max-width: 600px) {
     nav ul {
-        display: flex;
-        flex-wrap: wrap;       /* <-- AJOUTE ÇA : Permet de passer à la ligne */
-        flex-direction: row; 
-        justify-content: center; 
-        align-items: center;
-        gap: 8px;              /* Un peu d'espace pour que ce soit beau */
-        padding: 10px;
-        width: 100%;
+        display: flex;       /* Active le mode rangement flexible */
+        flex-wrap: wrap;    /* <--- TRÈS IMPORTANT : autorise le passage à la ligne */
+        justify-content: center; /* Centre les boutons */
+        gap: 8px;           /* Espace entre les boutons */
+        padding: 15px 5px;  /* Espace interne du menu */
+        list-style: none;
     }
 
     nav li {
-        width: auto;
+        width: auto;        /* Chaque bouton prend juste la place dont il a besoin */
     }
 
     nav a {
         display: inline-block;
         padding: 8px 12px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2); /* Un petit bord pour mieux voir */
-        border-radius: 8px;
-        font-size: 0.85rem; 
-        white-space: nowrap;   /* Empêche le texte du bouton de se couper en deux */
+        background: rgba(255, 255, 255, 0.15); /* Fond léger pour voir les boutons */
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        font-size: 0.85rem;  /* Taille de texte lisible mais compacte */
+        text-decoration: none;
+        color: white;
+        white-space: nowrap; /* Empêche le texte de se couper en deux */
     }
 }
 
