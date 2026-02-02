@@ -464,13 +464,6 @@ nav ul {
 .scrolling-text { display: inline-block; white-space: nowrap; padding-left: 100%; animation: scroll-left 15s linear infinite; font-weight: bold; }
 @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-nav, .admin-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px); /* L'effet de flou */
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
 .btn-save, .admin-header {
     background: linear-gradient(-45deg, #ff1493, #8a2be2, #ff69b4, #4b0082);
     background-size: 400% 400%;
