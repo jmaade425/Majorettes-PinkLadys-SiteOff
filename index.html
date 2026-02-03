@@ -85,28 +85,27 @@
     <h3>📸 Galerie Photos</h3>
     <div class="gallery-grid">
         <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/VM5UqU84EupMKEvYA">
-            <img src="images/IMG_Téléthon2025.jpg" alt="Téléthon 2025">
+            <img src="images/img_telethon2025.jpg" alt="Téléthon 2025">
         </div>
         <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/9neX6XKm2MDYHNhGA">
-            <img src="images/IMG_Noël2025.jpg" alt="Noël Soleil levant 2025">
+            <img src="images/img_noel2025.jpg" alt="Noël Soleil levant 2025">
         </div>
         <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/mCScYjdb3EjvJFaU7">
-            <img src="images/IMG_Corso2025.jpg" alt="Corso 2025">
+            <img src="images/img_corso2025.jpg" alt="Corso 2025">
         </div>
         <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/e2GK5njar4rrph1v5">
-            <img src="images/VID_RetAuxFlamb2025.mp4" alt="Retraite au flambeaux 2025">
+            <video src="images/vid_retauxflamb2025.mp4" alt="Retraite au flambeaux 2025" controls>
         </div>
         <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/KJjPVdoHpbHnRiHV8">
-            <img src="images/IMG.OCTROSE2025.jpg" alt="Octobre Rose 2025">
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)" data-album="">
-            <img src="" alt="">
+            <img src="images/img_octobrerose2025.jpg" alt="Octobre Rose 2025">
         </div>
     </div>
+    </section>
 
     <div class="archive-box">
     <label for="archive-select">📁 Voir d'autres albums :</label>
     <select id="archive-select" onchange="window.open(this.value, '_blank'); this.selectedIndex = 0;">
+        <option value="" selected disabled>Choisir un événement...</option>
         <option value="https://photos.app.goo.gl/VM5UqU84EupMKEvYA">Téléthon 2025</option>
         <option value="https://photos.app.goo.gl/9neX6XKm2MDYHNhGA">Noël Soleil levant 2025</option>
         <option value="https://photos.app.goo.gl/mCScYjdb3EjvJFaU7">Corso 2025</option>
