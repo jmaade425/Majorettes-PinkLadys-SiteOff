@@ -499,3 +499,37 @@ nav ul {
 .announcement-bar { background: #ff1493; color: white; padding: 10px 0; overflow: hidden; z-index: 1001; }
 .scrolling-text { display: inline-block; white-space: nowrap; padding-left: 100%; animation: scroll-left 15s linear infinite; font-weight: bold; }
 @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+
+.archive-box {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fdf2f7; /* Rose très pâle */
+    border: 2px dashed #BA6E8F; /* Bordure pointillée rose */
+    border-radius: 15px;
+    text-align: center;
+}
+
+.archive-box label {
+    display: block;
+    margin-bottom: 10px;
+    color: #0C0420;
+    font-weight: bold;
+}
+
+#archive-select {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #BA6E8F;
+    background: white;
+    color: #7B466A;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    outline: none;
+}
+
+#archive-select:hover {
+    border-color: #ff1493;
+}

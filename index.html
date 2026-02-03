@@ -85,7 +85,7 @@
     <h3>📸 Galerie Photos</h3>
     <div class="gallery-grid">
         <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/cHdCarJyPXxWGZCC8">
-            <img src="images/WhatsApp Image 2026-02-03 at 17.30.06.jpeg" alt="Octobre Rose 2025">
+            <img src="images/IMG.OCTROSE2025.jpeg" alt="Octobre Rose 2025">
         </div>
         <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/2cDJrcEwXJWqeMWw8">
             <img src="images/IMG-20241020-WA0025.jpg" alt="Corso 2024">
@@ -103,6 +103,18 @@
             <img src="images/IMG_20251213_183639.jpg" alt="Téléthon 2025">
         </div>
     </div>
+
+    <div class="archive-box">
+    <label for="archive-select">📁 Voir d'autres albums :</label>
+    <select id="archive-select" onchange="window.open(this.value, '_blank'); this.selectedIndex = 0;">
+        <option value="" selected disabled>Choisir un événement...</option>
+        <option value="https://photos.app.goo.gl/cHdCarJyPXxWGZCC8">Octobre Rose 2025</option>
+        <option value="https://photos.app.goo.gl/2cDJrcEwXJWqeMWw8">Corso 2024</option>
+        <option value="https://photos.app.goo.gl/gZdBy8NbZ1Vm5ksn6">Téléthon 2024</option>
+        <option value="https://photos.app.goo.gl/huECWyVWpwRUn8x76">Maison de retraite</option>
+    </select>
+    </div>
+
     </section>
 
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
