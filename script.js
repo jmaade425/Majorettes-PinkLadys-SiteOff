@@ -175,14 +175,37 @@ function renderEventList() {
 }
 
 // --- 5. LIGHTBOX PHOTOS ---
-window.openLightbox = function(imgElement) {
+window.openLightbox = function(galleryItem) {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const albumContainer = document.getElementById('album-link-container');
+
     if (!lightbox || !lightboxImg) return;
+
+    // 1. Récupérer les données de l'élément cliqué
+    const img = galleryItem.querySelector('img');
+    const albumUrl = galleryItem.getAttribute('data-album');
+
+    // 2. Remplir la lightbox
+    lightboxImg.src = img.src;
+    lightboxCaption.innerText = img.alt;
+
+    // 3. Gérer le bouton "Voir l'album"
+    albumContainer.innerHTML = ""; // On vide d'abord
+    if (albumUrl && albumUrl !== "" && albumUrl !== "LIEN_VERS_ALBUM_1") {
+        const albumBtn = document.createElement('a');
+        albumBtn.href = albumUrl;
+        albumBtn.target = "_blank";
+        albumBtn.className = "btn-view-album";
+        albumBtn.innerHTML = "📂 Voir tout le dossier photos";
+        albumContainer.appendChild(albumBtn);
+    }
+
+    // 4. Afficher
     lightbox.style.display = 'flex';
-    lightboxImg.src = imgElement.src;
 };
 
 window.closeLightbox = function() {
     document.getElementById('lightbox').style.display = 'none';
-};
+}

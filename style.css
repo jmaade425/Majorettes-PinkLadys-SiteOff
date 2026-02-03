@@ -176,7 +176,7 @@ html {
     }
 }
 
-/* Grille de photos */
+/* --- GRILLE DE PHOTOS --- */
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -184,23 +184,30 @@ html {
     padding: 10px;
 }
 
-.gallery-grid img {
+/* On applique maintenant le style à l'item et à l'image qu'il contient */
+.gallery-item {
     width: 100%;
     height: 180px;
-    object-fit: cover;
     border-radius: 10px;
+    overflow: hidden; /* Pour que l'image ne dépasse pas des bords arrondis */
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.gallery-grid img:hover {
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garde les photos bien cadrées */
+}
+
+.gallery-item:hover {
     transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* Style de la fenêtre Lightbox */
+/* --- STYLE DE LA FENÊTRE LIGHTBOX --- */
 .lightbox {
-    display: none; /* Caché par défaut */
+    display: none; 
     position: fixed;
     z-index: 2000;
     top: 0; left: 0;
@@ -211,9 +218,18 @@ html {
     flex-direction: column;
 }
 
-.lightbox img {
+/* Conteneur pour grouper image + texte + bouton */
+.lightbox-container {
+    text-align: center;
     max-width: 90%;
-    max-height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lightbox img {
+    max-width: 95%;
+    max-height: 75vh; /* Évite que l'image prenne tout l'écran s'il y a du texte en dessous */
     border: 3px solid white;
     border-radius: 5px;
 }
@@ -222,6 +238,25 @@ html {
     color: white;
     margin-top: 15px;
     font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* BOUTON VOIR L'ALBUM */
+.btn-view-album {
+    display: inline-block;
+    background: #BA6E8F; /* Ton rose */
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: 0.3s;
+}
+
+.btn-view-album:hover {
+    background: white;
+    color: #BA6E8F;
 }
 
 .close-lightbox {
@@ -232,6 +267,7 @@ html {
     cursor: pointer;
 }
 
+/* --- FOOTER (Inchangé) --- */
 .main-footer {
     background: #2d3436;
     color: white;

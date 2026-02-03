@@ -82,16 +82,37 @@
     </section>
 
     <section id="galerie" class="section">
-        <h3>📸 Galerie Photos</h3>
-        <div class="gallery-grid">
-            <img src="images/IMG-20241012-WA0001.jpg" alt="Retraite aux flambeaux 2024" onclick="openLightbox(this)">
-            <img src="images/IMG-20241020-WA0025.jpg" alt="Corso 2024" onclick="openLightbox(this)">
-            <img src="images/IMG-20241130-WA0018.jpg" alt="Téléthon 2024" onclick="openLightbox(this)">
-            <img src="images/IMG-20250514-WA0007.jpg" alt="Maison de retraite" onclick="openLightbox(this)">
-            <img src="images/IMG-20260127-WA0004.jpg" alt="Octobre Rose 2024" onclick="openLightbox(this)">
-            <img src="images/IMG_20251213_183639.jpg" alt="Téléthon 2025" onclick="openLightbox(this)">
-            </div>
+    <h3>📸 Galerie Photos</h3>
+    <div class="gallery-grid">
+        <div class="gallery-item" onclick="openLightbox(this)" data-album="LIEN_VERS_ALBUM_1">
+            <img src="images/IMG-20241012-WA0001.jpg" alt="Retraite aux flambeaux 2024">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(this)" data-album="LIEN_VERS_ALBUM_2">
+            <img src="images/IMG-20241020-WA0025.jpg" alt="Corso 2024">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(this)" data-album="LIEN_VERS_ALBUM_3">
+            <img src="images/IMG-20241130-WA0018.jpg" alt="Téléthon 2024">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(this)" data-album="LIEN_VERS_ALBUM_4">
+            <img src="images/IMG-20250514-WA0007.jpg" alt="Maison de retraite">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(this)" data-album="LIEN_VERS_ALBUM_5">
+            <img src="images/IMG-20260127-WA0004.jpg" alt="Octobre Rose 2024">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(this)" data-album="LIEN_VERS_ALBUM_6">
+            <img src="images/IMG_20251213_183639.jpg" alt="Téléthon 2025">
+        </div>
+    </div>
     </section>
+
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span class="close-lightbox">&times;</span>
+    <div class="lightbox-container" onclick="event.stopPropagation()">
+        <img id="lightbox-img" src="">
+        <h4 id="lightbox-caption"></h4>
+        <div id="album-link-container"></div>
+    </div>
+</div>
 
 
   <section id="playlist" class="section" style="text-align: center; background: var(--white); padding: 50px 20px;">
