@@ -555,3 +555,16 @@ nav ul {
     object-fit: cover; /* Remplit le cadre sans déformer */
     display: block;
 }
+
+#aide h4 {
+    color: var(--purple-main);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#aide .news-box, #aide .events-box {
+    border-top: 5px solid var(--pink-soft); /* Un peu plus doux que le violet */
+    min-height: auto; /* Pas besoin qu'ils soient géants ici */
+}
