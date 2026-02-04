@@ -183,17 +183,20 @@ window.openLightbox = function(galleryItem) {
 
     if (!lightbox || !lightboxImg) return;
 
-    // 1. Récupérer les données de l'élément cliqué
-    const img = galleryItem.querySelector('img');
+    // 1. Cherche soit une image, soit une vidéo
+    const media = galleryItem.querySelector('img, video');
+    if (!media) return; 
+
     const albumUrl = galleryItem.getAttribute('data-album');
 
     // 2. Remplir la lightbox
-    lightboxImg.src = img.src;
-    lightboxCaption.innerText = img.alt;
+    // Si c'est une vidéo, on peut afficher une icône ou une image par défaut
+    lightboxImg.src = media.src; 
+    lightboxCaption.innerText = media.getAttribute('alt') || "Spectacle";
 
-    // 3. Gérer le bouton "Voir l'album"
-    albumContainer.innerHTML = ""; // On vide d'abord
-    if (albumUrl && albumUrl !== "" && albumUrl !== "LIEN_VERS_ALBUM_1") {
+    // 3. Bouton Album
+    albumContainer.innerHTML = ""; 
+    if (albumUrl) {
         const albumBtn = document.createElement('a');
         albumBtn.href = albumUrl;
         albumBtn.target = "_blank";
@@ -202,7 +205,6 @@ window.openLightbox = function(galleryItem) {
         albumContainer.appendChild(albumBtn);
     }
 
-    // 4. Afficher
     lightbox.style.display = 'flex';
 };
 
