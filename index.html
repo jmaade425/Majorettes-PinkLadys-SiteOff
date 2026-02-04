@@ -5,23 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Majorettes & Pink Lady's</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
     <div id="lock-screen">
         <div class="lock-box">
-            <img src="images/IMG-20241020-WA0025.jpg" alt="Logo" style="width:80px; border-radius:50%; margin-bottom:15px;">
+            <img src="images/IMG-20241020-WA0025.jpg" alt="Logo">
             <h2>Accès Privé</h2>
-            <p>Entrez le code pour accéder au site</p>
-            <input type="password" id="input-code" placeholder="Code secret...">
+            <p>Entrez le code secret</p>
+            <input type="password" id="input-code" placeholder="Code...">
             <button class="btn-lock" onclick="verifierCode()">Valider ✨</button>
         </div>
     </div>
 
-<div id="top-announcement" class="announcement-bar" style="display: none;">
-    <div class="scrolling-text" id="announcement-text"></div>
-</div>
+    <div id="top-announcement" class="announcement-bar" style="display: none;">
+        <div class="scrolling-text" id="announcement-text"></div>
+    </div>
 
     <nav>
         <ul>
@@ -39,223 +38,86 @@
         <p>Saison 2025 - 2026</p>
     </header>
 
-    <div class="section">
+    <main class="section">
         <div class="dashboard-grid">
             <div id="actus" class="news-box">
-                <h3>📢 Evènements à venir</h3>
-                <div id="main-event-list">
-                    <p>Chargement des actualités...</p>
-                </div>
+                <h3>📢 Évènements à venir</h3>
+                <div id="main-event-list">Chargement...</div>
             </div>
-
             <div class="events-box">
                 <h3>💡 Rappel Rapide</h3>
-                <p>N'oubliez pas votre bâton et/ou vos pompoms pour chaque entraînement !</p>
-                <br>
-                <p>📍 <strong>Mercredi :</strong> Gymnase de l'Amicale Fayol Gaffard</p>
-                <p>📍 <strong>Vendredi :</strong> Gymnase de La Tardive</p>
+                <p>N'oubliez pas votre matériel !</p>
+                <p>📍 Mercredi : Fayol Gaffard | Vendredi : La Tardive</p>
             </div>
         </div>
-    </div>
 
-    <section id="calendrier" class="section">
-        <div class="calendar-container">
-            <div id="info-panel" class="info-panel">
-                <h4>Détails</h4>
-                <p>Cliquez sur un jour coloré pour voir les infos.</p>
-            </div>
-
-            <div class="calendar-main">
-                <div class="calendar-header">
-                    <button onclick="changeMonth(-1)">◀</button>
-                    <strong id="currentMonthYear"></strong>
-                    <button onclick="changeMonth(1)">▶</button>
+        <section id="calendrier" style="margin-top: 40px;">
+            <div class="calendar-container">
+                <div id="info-panel" class="info-panel">
+                    <h4>Détails</h4>
+                    <p>Cliquez sur un jour coloré.</p>
                 </div>
-                <div id="calendarGrid" class="calendar-grid"></div>
-                
-                <div class="legend">
-                    <span><span class="dot" style="background:var(--purple-main)"></span> Spectacle</span>
-                    <span><span class="dot" style="background:var(--pink-soft)"></span> Entraînement</span>
+                <div class="calendar-main">
+                    <div class="calendar-header">
+                        <button onclick="changeMonth(-1)">◀</button>
+                        <strong id="currentMonthYear"></strong>
+                        <button onclick="changeMonth(1)">▶</button>
+                    </div>
+                    <div id="calendarGrid" class="calendar-grid"></div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="galerie" class="section">
-    <h3>📸 Galerie Photos</h3>
-    <div class="gallery-grid">
-        <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/VM5UqU84EupMKEvYA">
-            <img src="images/img_telethon2025.jpg" alt="Téléthon 2025">
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/9neX6XKm2MDYHNhGA">
-            <img src="images/img_noel2025.jpg" alt="Noël Soleil levant 2025">
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/mCScYjdb3EjvJFaU7">
-            <img src="images/img_corso2025.jpg" alt="Corso 2025">
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/e2GK5njar4rrph1v5">
-            <video src="images/vid_retauxflamb2025.mp4" muted></video>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/KJjPVdoHpbHnRiHV8">
-            <img src="images/img_octobrerose2025.jpg" alt="Octobre Rose 2025">
-        </div>
-    </div>
-    </section>
-
-    <div class="archive-box">
-    <label for="archive-select">📁 Voir d'autres albums :</label>
-    <select id="archive-select" onchange="window.open(this.value, '_blank'); this.selectedIndex = 0;">
-        <option value="" selected disabled>Choisir un événement...</option>
-        <option value="https://photos.app.goo.gl/VM5UqU84EupMKEvYA">Téléthon 2025</option>
-        <option value="https://photos.app.goo.gl/9neX6XKm2MDYHNhGA">Noël Soleil levant 2025</option>
-        <option value="https://photos.app.goo.gl/mCScYjdb3EjvJFaU7">Corso 2025</option>
-        <option value="https://photos.app.goo.gl/e2GK5njar4rrph1v5">Retraite au flambeaux 2025</option>
-        <option value="https://photos.app.goo.gl/KJjPVdoHpbHnRiHV8">Octobre Rose 2025</option>
-        <option value="https://photos.app.goo.gl/ELnrzWEjdjJFT3Mo7">Maison de retraite 2025</option>
-        <option value="https://photos.app.goo.gl/mRZUZgLfenfGBTct8">Forum des Assos 2025</option>
-        <option value="https://photos.app.goo.gl/CddvWgR8GFVzQucy6">Corida 2025</option>
-        <option value="https://photos.app.goo.gl/TrDyvh8PKf1UtkPo7">90 ans amicale</option>
-        <option value="https://photos.app.goo.gl/X3J1MEoNzYDc23Fk9">Yssingeaux 2025</option>
-        <option value="https://photos.app.goo.gl/huECWyVWpwRUn8x76">Maison de retraite</option>
-        <option value="https://photos.app.goo.gl/gZdBy8NbZ1Vm5ksn6">Téléthon 2024</option>  
-        <option value="https://photos.app.goo.gl/4BfDPdp9CFDo3Gun6">Marché de Noël 2024</option>
-        <option value="https://photos.app.goo.gl/2cDJrcEwXJWqeMWw8">Corso 2024</option>
-        <option value="https://photos.app.goo.gl/dF8jB93QJth8WWu28">Retraite aux flambeaux 2024</option>
-        <option value="https://photos.app.goo.gl/CiRDEvMUJX7NAHx3A">Octobre Rose 2024</option>
-    </select>
-    </div>
-
-    </section>
-
-<div id="lightbox" class="lightbox" onclick="closeLightbox()">
-    <span class="close-lightbox">&times;</span>
-    <div class="lightbox-container" onclick="event.stopPropagation()">
-        <img id="lightbox-img" src="">
-        <h4 id="lightbox-caption"></h4>
-        <div id="album-link-container"></div>
-    </div>
-</div>
-
-
-  <section id="playlist" class="section" style="text-align: center; background: var(--white); padding: 50px 20px;">
-    <div style="max-width: 600px; margin: 0 auto; border: 2px dashed var(--pink-bold); padding: 30px; border-radius: 20px;">
-        <h3 style="color: var(--purple-main); margin-bottom: 15px;">🎵 Playlist Officielle</h3>
-        <p style="margin-bottom: 25px; font-style: italic;">
-            Toutes les musiques des Pink Lady's (bonnes versions) sont regroupées ici pour vos entraînements ! ✨
-        </p>
-        
-        <a href="https://www.youtube.com/playlist?list=PLw2M4w9azpTbFEL2DK6lKxUv4u_84tTph" target="_blank" class="btn-playlist">
-            ▶ Ouvrir la Playlist YouTube
-        </a>
-    </div>
-</section>
-
-
-    <footer id="contact" class="main-footer">
-        <div class="footer-container">
-            <div class="footer-col">
-            <h4>📞 Nous Contacter</h4>
-            <div class="contact-card">
-                <p><strong>S. MASSARDIER</strong><br><small>Présidente Amicale</small></p>
-                <a href="tel:0631153253" class="btn-contact">Appeler : 06 31 15 32 53</a>
+        <section id="galerie" style="margin-top: 40px;">
+            <h3>📸 Galerie Photos & Vidéos</h3>
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/VM5UqU84EupMKEvYA">
+                    <img src="images/img_telethon2025.jpg" alt="Téléthon 2025">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/9neX6XKm2MDYHNhGA">
+                    <img src="images/img_noel2025.jpg" alt="Noël 2025">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/e2GK5njar4rrph1v5">
+                    <video src="images/vid_retauxflamb2025.mp4" muted></video>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)" data-album="https://photos.app.goo.gl/KJjPVdoHpbHnRiHV8">
+                    <img src="images/img_octobrerose2025.jpg" alt="Octobre Rose 2025">
+                </div>
             </div>
-            <div class="contact-card">
-                <p><strong>L. GUYARD</strong><br><small>Présidente Majorettes</small></p>
-                <a href="tel:0621152739" class="btn-contact">Appeler : 06 21 15 27 39</a>
-            </div>
-        </div>
 
-        <div class="footer-col">
-            <h4>📱 Suivez-nous</h4>
-            <div class="social-links">
-                <a href="https://www.instagram.com/les_majo.de.firminy?igsh=MXJ3bXp6M3JzcTVoeg==" target="_blank" class="social-btn instagram">Instagram</a>
-                <a href="https://www.tiktok.com/@majorette.de.firm?_r=1&_t=ZN-93S2gI9SM3K" target="_blank" class="social-btn tiktok">TikTok</a>
-                <a href="https://www.facebook.com/profile.php?id=100064450765739&locale=fr_FR" target="_blank" class="social-btn facebook">Facebook (de l'amicale)</a>
-                <a href="https://chat.whatsapp.com/BaHwg4mMRxAKto3QIcSRys" id="group-link" target="_blank" class="social-btn group-chat">
-                    💬 Question sur le Groupe ?
-                </a>
+            <div class="archive-box">
+                <label>📁 Autres albums :</label>
+                <select id="archive-select" onchange="if(this.value) window.open(this.value, '_blank')">
+                    <option value="">Choisir un événement...</option>
+                    <option value="https://photos.app.goo.gl/VM5UqU84EupMKEvYA">Téléthon 2025</option>
+                    </select>
             </div>
-        </div>
+        </section>
+    </main>
 
-        <div class="footer-col">
-            <h4>📍 Nos Lieux</h4>
-            <p><small>Cliquez pour ouvrir le GPS :</small></p>
-            <a href="https://maps.google.com/?cid=4608195298435571567&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" class="map-link">
-                🏠 Gymnase Fayol-Gaffard
-            </a>
-            <a href="https://maps.google.com/?cid=6110162698348778920&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" class="map-link">
-                🏠 Gymnase de la Tardive
-            </a>
-        
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close-lightbox">×</span>
+        <div class="lightbox-container" onclick="event.stopPropagation()">
+            <div id="lightbox-media-container"></div>
+            <h4 id="lightbox-caption"></h4>
+            <div id="album-link-container"></div>
         </div>
     </div>
 
-        <div class="footer-bottom">
-            &copy; 2026 Majorettes & Pink Lady's - Site Privé Créé par MICHEL Jade
-        </div>
-    </footer>
-
-    <div id="lightbox" class="lightbox">
-        <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
-        <img id="lightbox-img" src="" alt="">
-        <p id="lightbox-caption"></p>
-    </div>
-
-<script>
-        // 1. Vérification de l'accès au chargement
+    <script src="script.js" type="module"></script>
+    <script>
+        function verifierCode() {
+            const code = document.getElementById('input-code').value;
+            if (code === "MP42#") {
+                localStorage.setItem('majorettes_auth', 'true');
+                document.getElementById('lock-screen').style.display = 'none';
+            } else if (code === "MAPL42") {
+                window.location.href = "admin.html";
+            } else { alert("Code incorrect 🎀"); }
+        }
         if (localStorage.getItem('majorettes_auth') === 'true') {
             document.getElementById('lock-screen').style.display = 'none';
         }
-
-        // 2. Fonction pour valider le code
-        function verifierCode() {
-            const codeSaisi = document.getElementById('input-code').value;
-            const codeParent = "MP42#";  
-            const codeCoach = "MAPL42";   
-
-            if (codeSaisi === codeParent) {
-                localStorage.setItem('majorettes_auth', 'true');
-                localStorage.setItem('role', 'parent');
-                document.getElementById('lock-screen').style.display = 'none';
-            } 
-            else if (codeSaisi === codeCoach) {
-                localStorage.setItem('role', 'coach');
-                localStorage.setItem('majorettes_auth', 'true');
-                window.location.href = "admin.html"; // Direction la gestion !
-            } 
-            else {
-                alert("Code incorrect 🎀");
-            }
-        }
-
-        // 3. NOUVEAU : Fonction pour le bouton "Coach" du menu
-        document.getElementById('admin-link').addEventListener('click', function(e) {
-            e.preventDefault(); // Empêche de sauter en haut de page
-            
-            // On supprime l'autorisation pour forcer le code
-            localStorage.removeItem('majorettes_auth');
-            localStorage.removeItem('role');
-            
-            // On vide le champ et on réaffiche l'écran
-            document.getElementById('input-code').value = '';
-            document.getElementById('lock-screen').style.display = 'flex';
-            
-            // On remonte en haut pour que l'écran soit bien visible
-            window.scrollTo(0, 0);
-        });
-
-        window.addEventListener('load', () => {
-    const savedInfo = localStorage.getItem('coach_announcement');
-    const bar = document.getElementById('top-announcement');
-    const textZone = document.getElementById('announcement-text');
-
-    if (savedInfo && savedInfo.trim() !== "") {
-        textZone.innerText = savedInfo;
-        bar.style.display = 'block';
-    }
-});
     </script>
-    <script type="module" src="script.js"></script>
-
 </body>
 </html>
